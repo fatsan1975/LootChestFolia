@@ -13,8 +13,6 @@ import org.bukkit.block.BlockState;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
-import org.bukkit.material.DirectionalContainer;
-import org.bukkit.material.MaterialData;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import fr.black_eyes.api.events.LootChestSpawnEvent;
@@ -423,20 +421,22 @@ public class Lootchest {
 
 		// set the direction of the chest
 		try {
-			if (Main.getCompleteVersion() >= 1140) {
-				org.bukkit.block.data.BlockData data;
-				data = block.getBlockData();
-				((org.bukkit.block.data.Directional) data).setFacing(BlockFace.valueOf(direction));
-				BlockState state = block.getState();
-				state.setBlockData(data);
-				state.update();
-			} else {
-				MaterialData data = block.getState().getData();
-				((DirectionalContainer) data).setFacingDirection(BlockFace.valueOf(direction));
-				BlockState state = block.getState();
-				state.setData(data);
-				state.update();
-			}
+            if(!block.getType().toString().contains("SHULKER_BOX")) {
+                if (Main.getCompleteVersion() >= 1110) {
+                    org.bukkit.block.data.BlockData data;
+                    data = block.getBlockData();
+                    ((org.bukkit.block.data.Directional) data).setFacing(BlockFace.valueOf(direction));
+                    BlockState state = block.getState();
+                    state.setBlockData(data);
+                    state.update();
+                } else {
+                    org.bukkit.material.MaterialData data = block.getState().getData();
+                    ((org.bukkit.material.DirectionalContainer) data).setFacingDirection(BlockFace.valueOf(direction));
+                    BlockState state = block.getState();
+                    state.setData(data);
+                    state.update();
+                }
+            }
 		}catch(Exception e){
 			Utils.logInfo("&eError while setting the direction of the chest " + getName() + "; This will not prevent the plugin to work, but if you manage to reproduce it, tell me, so I can fix it.");
 		}

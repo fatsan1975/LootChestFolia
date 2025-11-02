@@ -16,8 +16,6 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.LivingEntity;
-import org.bukkit.material.DirectionalContainer;
-import org.bukkit.material.MaterialData;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import fr.black_eyes.simpleJavaPlugin.Files;
@@ -447,17 +445,27 @@ public class LootChestUtils  {
 	}
 	
 	/**
-	 * Get the direction of a chest with its beautiful superclass "DirectionalContainer"
-	 * @param chest a chest Block
-	 * @return the direction of the chest
+	 * Get the direction of a container
+	 * @param chest a container Block
+	 * @return the direction of the container
 	 */
 	@SuppressWarnings("removal")
 	public static String getDirection(Block chest) {
-		if(Main.getVersion() ==7) {
-			return "NORTH";
-		}
-		MaterialData data = chest.getState().getData();
-		return ((DirectionalContainer)data).getFacing().name();	
+        if(chest.getType().toString().contains("SHULKER_BOX")) return "NULL";
+		if(Main.getVersion() ==7) return "NORTH";
+        // before 1.13. This method also compiles in later versions but does not work properly.
+        try {
+            if (Main.getVersion() < 13) {
+                org.bukkit.material.MaterialData data = chest.getState().getData();
+                return ((org.bukkit.material.DirectionalContainer) data).getFacing().name();
+            } else {
+                org.bukkit.block.data.BlockData data = chest.getBlockData();
+                return ((org.bukkit.block.data.Directional) data).getFacing().name();
+            }
+        }catch (ClassCastException e){
+            Utils.logInfo("&cCould not get the direction of the chest, this should be reported to the dev (me) - "+ Bukkit.getBukkitVersion());
+            return "NORTH";
+        }
 	}
 
 	public static Block getWatchedBlock(LivingEntity player){

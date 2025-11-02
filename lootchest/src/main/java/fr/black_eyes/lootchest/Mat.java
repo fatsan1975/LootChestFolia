@@ -163,6 +163,6 @@ public final class Mat {
 	}
 	
 	public static boolean isALootChestBlock(Block block) {
-		return (block.getType().equals(Mat.CHEST) || block.getType().equals(Mat.TRAPPED_CHEST) || block.getType().equals(Mat.BARREL));
+		return (block.getType().toString().contains("SHULKER_BOX") || block.getType().equals(Mat.CHEST) || block.getType().equals(Mat.TRAPPED_CHEST) || block.getType().equals(Mat.BARREL));
 	}
 }

@@ -1,6 +1,7 @@
 package fr.black_eyes.lootchest.ui.menu;
 
 import fr.black_eyes.lootchest.Lootchest;
+import fr.black_eyes.lootchest.Main;
 import fr.black_eyes.lootchest.Mat;
 import fr.black_eyes.lootchest.LootChestUtils;
 import fr.black_eyes.lootchest.ui.ChestUi;
@@ -20,15 +21,24 @@ public class TypeMenu extends ChestUi {
 	private final UiHandler uiHandler;
 
 	public TypeMenu(Lootchest chest, UiHandler uiHandler) {
-		super(1, LootChestUtils.getMenuName("type", chest.getName()));
+		super(3, LootChestUtils.getMenuName("type", chest.getName()));
 		this.chest = chest;
 		this.uiHandler = uiHandler;
 
 		setItem(0, new ItemStack(Mat.CHEST, 1), p -> changeChestType(p, Mat.CHEST));
 		setItem(1, new ItemStack(Mat.TRAPPED_CHEST, 1), p -> changeChestType(p, Mat.TRAPPED_CHEST));
 		if (Mat.BARREL != Mat.CHEST) {
-			setItem(3, new ItemStack(Mat.BARREL), p -> changeChestType(p, Mat.BARREL));
+			setItem(2, new ItemStack(Mat.BARREL), p -> changeChestType(p, Mat.BARREL));
 		}
+        if(Main.getVersion()>=11){
+            int cpt = 3;
+            for(Material mat : Material.values()){
+                if(mat.toString().contains("SHULKER_BOX")){
+                    setItem(cpt, new ItemStack(mat, 1), p -> changeChestType(p, mat));
+                    cpt++;
+                }
+            }
+        }
 	}
 
 	void changeChestType(Player player, Material type) {
