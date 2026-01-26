@@ -25,9 +25,6 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
@@ -70,12 +67,6 @@ public class Metrics {
             // Inform the server owners about bStats
             config
                     .options()
-                    .header(
-                            "bStats (https://bStats.org) collects some basic information for plugin authors, like how\n"
-                                    + "many people use their plugin and their total player count. It's recommended to keep bStats\n"
-                                    + "enabled, but if you're not comfortable with this, you can turn this setting off. There is no\n"
-                                    + "performance penalty associated with having metrics enabled, and data sent to bStats is fully\n"
-                                    + "anonymous.")
                     .copyDefaults(true);
             try {
                 config.save(configFile);
@@ -191,8 +182,6 @@ public class Metrics {
 
         private final boolean logResponseStatusText;
 
-        private final Set<CustomChart> customCharts = new HashSet<>();
-
         private final boolean enabled;
 
         /**
@@ -201,21 +190,21 @@ public class Metrics {
          * @param platform The platform of the service.
          * @param serviceId The id of the service.
          * @param serverUuid The server uuid.
-         * @param enabled Whether or not data sending is enabled.
+         * @param enabled Whether data sending is enabled.
          * @param appendPlatformDataConsumer A consumer that receives a {@code JsonObjectBuilder} and
          *     appends all platform-specific data.
          * @param appendServiceDataConsumer A consumer that receives a {@code JsonObjectBuilder} and
          *     appends all service-specific data.
          * @param submitTaskConsumer A consumer that takes a runnable with the submit task. This can be
-         *     used to delegate the data collection to a another thread to prevent errors caused by
+         *     used to delegate the data collection to a thread to prevent errors caused by
          *     concurrency. Can be {@code null}.
          * @param checkServiceEnabledSupplier A supplier to check if the service is still enabled.
          * @param errorLogger A consumer that accepts log message and an error.
          * @param infoLogger A consumer that accepts info log messages.
-         * @param logErrors Whether or not errors should be logged.
-         * @param logSentData Whether or not the sent data should be logged.
-         * @param logResponseStatusText Whether or not the response status text should be logged.
-         * @param skipRelocateCheck Whether or not the relocate check should be skipped.
+         * @param logErrors Whether errors should be logged.
+         * @param logSentData Whether the sent data should be logged.
+         * @param logResponseStatusText Whether the response status text should be logged.
+         * @param skipRelocateCheck Whether the relocate check should be skipped.
          */
         public MetricsBase(
                 String platform,
@@ -303,11 +292,7 @@ public class Metrics {
             appendPlatformDataConsumer.accept(baseJsonBuilder);
             final JsonObjectBuilder serviceJsonBuilder = new JsonObjectBuilder();
             appendServiceDataConsumer.accept(serviceJsonBuilder);
-            JsonObjectBuilder.JsonObject[] chartData =
-                    customCharts.stream()
-                            .map(customChart -> customChart.getRequestJsonObject(errorLogger, logErrors))
-                            .filter(Objects::nonNull)
-                            .toArray(JsonObjectBuilder.JsonObject[]::new);
+            JsonObjectBuilder.JsonObject[] chartData = new JsonObjectBuilder.JsonObject[0];
             serviceJsonBuilder.appendField("id", serviceId);
             serviceJsonBuilder.appendField("customCharts", chartData);
             baseJsonBuilder.appendField("service", serviceJsonBuilder.build());
@@ -398,44 +383,10 @@ public class Metrics {
         }
     }
 
-    public abstract static class CustomChart {
-
-        private final String chartId;
-
-        protected CustomChart(String chartId) {
-            if (chartId == null) {
-                throw new IllegalArgumentException("chartId must not be null");
-            }
-            this.chartId = chartId;
-        }
-
-        public JsonObjectBuilder.JsonObject getRequestJsonObject(
-                BiConsumer<String, Throwable> errorLogger, boolean logErrors) {
-            JsonObjectBuilder builder = new JsonObjectBuilder();
-            builder.appendField("chartId", chartId);
-            try {
-                JsonObjectBuilder.JsonObject data = getChartData();
-                if (data == null) {
-                    // If the data is null we don't send the chart.
-                    return null;
-                }
-                builder.appendField("data", data);
-            } catch (Throwable t) {
-                if (logErrors) {
-                    errorLogger.accept("Failed to get data for custom chart with id " + chartId, t);
-                }
-                return null;
-            }
-            return builder.build();
-        }
-
-        protected abstract JsonObjectBuilder.JsonObject getChartData() throws Exception;
-    }
-
     /**
      * An extremely simple JSON builder.
      *
-     * <p>While this class is neither feature-rich nor the most performant one, it's sufficient enough
+     * <p>While this class is neither feature-rich nor the most performant one, it's sufficient
      * for its use-case.
      */
     public static class JsonObjectBuilder {

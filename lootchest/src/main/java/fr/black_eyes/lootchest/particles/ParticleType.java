@@ -59,11 +59,11 @@ public interface ParticleType {
      * Spawns the particle (the number of times specified by count)
      * at the target location.
      *
-     * @param <T>      type of particle data (see {@link ParticleType#getDataType()}
+     * @param <T>      type of particle data (see 
      * @param location the location to spawn at
      * @param count    the number of particles
      * @param data     the data to use for the particle or null,
-     *                 the type of this depends on {@link ParticleType#getDataType()}
+     *                 the type of this depends on 
      */
     default <T> void spawn(Location location, int count, T data) {
         spawn(location.getWorld(), location.getX(), location.getY(), location.getZ(), count, data);
@@ -73,14 +73,14 @@ public interface ParticleType {
      * Spawns the particle (the number of times specified by count)
      * at the target location.
      *
-     * @param <T>   type of particle data (see {@link ParticleType#getDataType()}
+     * @param <T>   type of particle data (see 
      * @param world the world to spawn particle to
      * @param x     the position on the x-axis to spawn at
      * @param y     the position on the y-axis to spawn at
      * @param z     the position on the z axis to spawn at
      * @param count the number of particles
      * @param data  the data to use for the particle or null,
-     *              the type of this depends on {@link ParticleType#getDataType()}
+     *              the type of this depends on 
      */
     default <T> void spawn(World world, double x, double y, double z, int count, T data) {
         spawn(world, x, y, z, count, 0, 0, 0, data);
@@ -127,14 +127,14 @@ public interface ParticleType {
      * randomized positively and negatively by the offset parameters
      * on each axis.
      *
-     * @param <T>      type of particle data (see {@link ParticleType#getDataType()}
+     * @param <T>      type of particle data (see 
      * @param location the location to spawn at
      * @param count    the number of particles
      * @param offsetX  the maximum random offset on the x-axis
      * @param offsetY  the maximum random offset on the y-axis
      * @param offsetZ  the maximum random offset on the Z axis
      * @param data     the data to use for the particle or null,
-     *                 the type of this depends on {@link ParticleType#getDataType()}
+     *                 the type of this depends on 
      */
     default <T> void spawn(Location location, int count, double offsetX, double offsetY, double offsetZ, T data) {
     	spawn(location.getWorld(), location.getX(), location.getY(), location.getZ(), count, offsetX, offsetY, offsetZ, data);
@@ -146,7 +146,7 @@ public interface ParticleType {
      * randomized positively and negatively by the offset parameters
      * on each axis.
      *
-     * @param <T>     type of particle data (see {@link ParticleType#getDataType()}
+     * @param <T>     type of particle data (see 
      * @param world   the world to spawn particle to
      * @param x       the position on the x-axis to spawn at
      * @param y       the position on the y-axis to spawn at
@@ -156,7 +156,7 @@ public interface ParticleType {
      * @param offsetY the maximum random offset on the y-axis
      * @param offsetZ the maximum random offset on the Z axis
      * @param data    the data to use for the particle or null,
-     *                the type of this depends on {@link ParticleType#getDataType()}
+     *                the type of this depends on 
      */
     default <T> void spawn(World world, double x, double y, double z, int count, double offsetX, double offsetY, double offsetZ, T data) {
         spawn(world, x, y, z, count, offsetX, offsetY, offsetZ, 1, data);
@@ -207,7 +207,7 @@ public interface ParticleType {
      * randomized positively and negatively by the offset parameters
      * on each axis.
      *
-     * @param <T>      type of particle data (see {@link ParticleType#getDataType()}
+     * @param <T>      type of particle data (see 
      * @param location the location to spawn at
      * @param count    the number of particles
      * @param offsetX  the maximum random offset on the x-axis
@@ -216,7 +216,7 @@ public interface ParticleType {
      * @param extra    the extra data for this particle, depends on the
      *                 particle used (normally speed)
      * @param data     the data to use for the particle or null,
-     *                 the type of this depends on {@link ParticleType#getDataType()}
+     *                 the type of this depends on 
      */
     default <T> void spawn(Location location, int count, double offsetX, double offsetY, double offsetZ, double extra, T data) {
         spawn(location.getWorld(), location.getX(), location.getY(), location.getZ(), count, offsetX, offsetY, offsetZ, extra, data);
@@ -228,7 +228,7 @@ public interface ParticleType {
      * randomized positively and negatively by the offset parameters
      * on each axis.
      *
-     * @param <T>     type of particle data (see {@link ParticleType#getDataType()}
+     * @param <T>     type of particle data (see 
      * @param world   the world to spawn particle to
      * @param x       the position on the x-axis to spawn at
      * @param y       the position on the y-axis to spawn at
@@ -240,7 +240,7 @@ public interface ParticleType {
      * @param extra   the extra data for this particle, depends on the
      *                particle used (normally speed)
      * @param data    the data to use for the particle or null,
-     *                the type of this depends on {@link ParticleType#getDataType()}
+     *                the type of this depends on 
      */
     <T> void spawn(World world, double x, double y, double z, int count, double offsetX, double offsetY, double offsetZ, double extra, T data);
 
@@ -274,12 +274,12 @@ public interface ParticleType {
      * Spawns the particle (the number of times specified by count)
      * at the target location.
      *
-     * @param <T>      type of particle data (see {@link ParticleType#getDataType()}
+     * @param <T>      type of particle data (see 
      * @param player   the player to spawn particle to
      * @param location the location to spawn at
      * @param count    the number of particles
      * @param data     the data to use for the particle or null,
-     *                 the type of this depends on {@link ParticleType#getDataType()}
+     *                 the type of this depends on 
      */
     default <T> void spawn(Player player, Location location, int count, T data) {
         spawn(player, location.getX(), location.getY(), location.getZ(), count, data);
@@ -289,14 +289,14 @@ public interface ParticleType {
      * Spawns the particle (the number of times specified by count)
      * at the target location.
      *
-     * @param <T>    type of particle data (see {@link ParticleType#getDataType()}
+     * @param <T>    type of particle data (see 
      * @param player the player to spawn particle to
      * @param x      the position on the x-axis to spawn at
      * @param y      the position on the y-axis to spawn at
      * @param z      the position on the z axis to spawn at
      * @param count  the number of particles
      * @param data   the data to use for the particle or null,
-     *               the type of this depends on {@link ParticleType#getDataType()}
+     *               the type of this depends on 
      */
     default <T> void spawn(Player player, double x, double y, double z, int count, T data) {
         spawn(player, x, y, z, count, 0, 0, 0, data);
@@ -344,7 +344,7 @@ public interface ParticleType {
      * randomized positively and negatively by the offset parameters
      * on each axis.
      *
-     * @param <T>      type of particle data (see {@link ParticleType#getDataType()}
+     * @param <T>      type of particle data (see 
      * @param player   the player to spawn particle to
      * @param location the location to spawn at
      * @param count    the number of particles
@@ -352,7 +352,7 @@ public interface ParticleType {
      * @param offsetY  the maximum random offset on the y-axis
      * @param offsetZ  the maximum random offset on the Z axis
      * @param data     the data to use for the particle or null,
-     *                 the type of this depends on {@link ParticleType#getDataType()}
+     *                 the type of this depends on 
      */
     default <T> void spawn(Player player, Location location, int count, double offsetX, double offsetY, double offsetZ, T data) {
         spawn(player, location.getX(), location.getY(), location.getZ(), count, offsetX, offsetY, offsetZ, data);
@@ -364,7 +364,7 @@ public interface ParticleType {
      * randomized positively and negatively by the offset parameters
      * on each axis.
      *
-     * @param <T>     type of particle data (see {@link ParticleType#getDataType()}
+     * @param <T>     type of particle data (see 
      * @param player  the player to spawn particle to
      * @param x       the position on the x-axis to spawn at
      * @param y       the position on the y-axis to spawn at
@@ -374,7 +374,7 @@ public interface ParticleType {
      * @param offsetY the maximum random offset on the y-axis
      * @param offsetZ the maximum random offset on the Z axis
      * @param data    the data to use for the particle or null,
-     *                the type of this depends on {@link ParticleType#getDataType()}
+     *                the type of this depends on 
      */
     default <T> void spawn(Player player, double x, double y, double z, int count, double offsetX, double offsetY, double offsetZ, T data) {
         spawn(player, x, y, z, count, offsetX, offsetY, offsetZ, 1, data);
@@ -426,7 +426,7 @@ public interface ParticleType {
      * randomized positively and negatively by the offset parameters
      * on each axis.
      *
-     * @param <T>      type of particle data (see {@link ParticleType#getDataType()}
+     * @param <T>      type of particle data (see 
      * @param player   the player to spawn particle to
      * @param location the location to spawn at
      * @param count    the number of particles
@@ -436,7 +436,7 @@ public interface ParticleType {
      * @param extra    the extra data for this particle, depends on the
      *                 particle used (normally speed)
      * @param data     the data to use for the particle or null,
-     *                 the type of this depends on {@link ParticleType#getDataType()}
+     *                 the type of this depends on 
      */
     default <T> void spawn(Player player, Location location, int count, double offsetX, double offsetY, double offsetZ, double extra, T data) {
         spawn(player, location.getX(), location.getY(), location.getZ(), count, offsetX, offsetY, offsetZ, extra, data);
@@ -448,7 +448,7 @@ public interface ParticleType {
      * randomized positively and negatively by the offset parameters
      * on each axis.
      *
-     * @param <T>     type of particle data (see {@link ParticleType#getDataType()}
+     * @param <T>     type of particle data (see 
      * @param player  the player to spawn particle to
      * @param x       the position on the x-axis to spawn at
      * @param y       the position on the y-axis to spawn at
@@ -460,7 +460,7 @@ public interface ParticleType {
      * @param extra   the extra data for this particle, depends on the
      *                particle used (normally speed)
      * @param data    the data to use for the particle or null,
-     *                the type of this depends on {@link ParticleType#getDataType()}
+     *                the type of this depends on 
      */
     <T> void spawn(Player player, double x, double y, double z, int count, double offsetX, double offsetY, double offsetZ, double extra, T data);
 }

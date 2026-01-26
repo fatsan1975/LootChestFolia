@@ -56,8 +56,7 @@ public final class FallingPackageEntity {
     }
     
 
-	@SuppressWarnings("deprecation")
-    public void summon() {
+	public void summon() {
         if(Main.getCompleteVersion() < 1083) this.armorstand = false;
         String version = Bukkit.getBukkitVersion().split("-")[0].replace(".", "_");
         try {
@@ -92,16 +91,14 @@ public final class FallingPackageEntity {
 			return loc2;
 		}
 	}
-	
-	@SuppressWarnings("deprecation")
+
 	public void tick() {
         if(blocky!=null){
             Vector v = ((Entity) blocky).getVelocity();
             v.setY(-(speed));
             ((Entity) blocky).setVelocity(v);
         }
-        Location locPackage = null;
-        locPackage = (!this.armorstand && this.blocky != null)? ((Entity) this.blocky).getLocation() : armorstandFall.getLocation();
+        Location locPackage = (!this.armorstand && this.blocky != null)? ((Entity) this.blocky).getLocation() : armorstandFall.getLocation();
 
         if (locPackage != null && this.world.getBlockAt(LocationUtils.offset(locPackage, 0.0, -1.0, 0.0)).getType() == Material.AIR) {
             ++this.counter;

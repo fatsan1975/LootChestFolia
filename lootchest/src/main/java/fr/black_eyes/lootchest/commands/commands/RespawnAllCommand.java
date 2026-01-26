@@ -13,6 +13,7 @@ import fr.black_eyes.lootchest.commands.ArgType;
 import fr.black_eyes.lootchest.commands.SubCommand;
 import fr.black_eyes.simpleJavaPlugin.Utils;
 
+@SuppressWarnings("unused")
 public class RespawnAllCommand extends SubCommand {
 	
 	public RespawnAllCommand() {
@@ -20,7 +21,7 @@ public class RespawnAllCommand extends SubCommand {
 	}
 	
 	@Override
-	@SuppressWarnings("deprecation")
+	@SuppressWarnings({"deprecation", "unused"})
 	protected void onCommand(CommandSender sender, String[] args) {
 		String worldName = null;
 		if (args.length ==2) {
@@ -38,7 +39,7 @@ public class RespawnAllCommand extends SubCommand {
 					Bukkit.getScheduler().scheduleSyncDelayedTask(Main.getInstance(), () ->
 							l.spawn(true), 0L), 5L);
 		}
-		String message = null;
+		String message;
 		if (Main.configs.noteAllcmdWorldE && worldName != null) {
 			message = Main.configs.noteAllcmdMsgWorld.replace("[World]", worldName);
 		}else if(Main.configs.noteAllcmdE && worldName == null) {
