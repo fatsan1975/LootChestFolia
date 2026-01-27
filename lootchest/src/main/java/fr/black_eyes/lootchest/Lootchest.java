@@ -177,7 +177,13 @@ public class Lootchest {
                 switch(types) {
                     case "TRAPPED_CHEST": type = Mat.TRAPPED_CHEST; break;
                     case "BARREL": type = Mat.BARREL; break;
-                    default: type = Mat.CHEST; break;
+                    default: {
+                        try{
+                            type = Material.valueOf(types);
+                        }catch(IllegalArgumentException e){
+                            type = Mat.CHEST;
+                        }
+                    } break;
                 }
             }
         }

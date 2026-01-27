@@ -1,15 +1,13 @@
-Build with maven
-
-How to build:
+### How to build:
 
 ```bash
 # this should be enough, but you can make an issue if there is any problem. I know that "it works on my computer" is not always a good answer
 mvn clean install
 ```
 
-How do I update the plugin at each minecraft version?
+### How do I update the plugin at each minecraft version?
 
-- I first update this fork: https://github.com/Guarmanda/DecentHolograms
+- I first update this fork with main official branch of decenholograms: https://github.com/Guarmanda/DecentHolograms
 - then, in fall_effect folder, I create a copy of the latest version of FallEffect class from DecentHolograms, and I adapt it to the new version (most of the time, nothing changes, or only one thing)
 You can watch this commit for example (only the 4 first files): https://github.com/Guarmanda/LootChest/commit/b421f9f61d75d8f4f2fd21ccecca0a21a83e474c
 
@@ -18,10 +16,6 @@ You can watch this commit for example (only the 4 first files): https://github.c
 <dt>Tested Minecraft Versions:</dt>
 <dd>1.7 - 1.21.X</dd>
 </dl>
-<dl class="customResourceFieldsource_code">
-
-<dl class="customResourceFieldcontributors">
-
 <dl class="customResourceFieldlanguages">
 <dt>Languages Supported:</dt>
 <dd>Editable language file</dd>
@@ -32,9 +26,9 @@ You can watch this commit for example (only the 4 first files): https://github.c
 </dl>
 <div style="text-align: center"><span style="font-size: 26px">LootChest</span></div><br />
 <span style="font-size: 12px">Configurable chest reloader<br />
-</span></span><br />
+</span><br />
 <span style="font-size: 22px"><b>Features:</b>
-</span>&#8203;</div>
+</span>&#8203;
 
 - Set particles for each chest (35 particles supported) (can be disabled for each chest)<br />
 - BungeeCord messages on chest respawn/take<br />
@@ -78,7 +72,7 @@ You can watch this commit for example (only the 4 first files): https://github.c
 <span style="font-size: 12px"><span style="font-size: 15px">-/lc getname : get name of targeted chest</span></span><br />
 <span style="font-size: 12px"><span style="font-size: 15px">-/lc locate : gives locations of all chests that haves natural respawn message enabled</span></span><br />
 <div style="text-align: center"><br />
-<b><span style="font-size: 22px">Permissions:</span></b></span><br />
+<b><span style="font-size: 22px">Permissions:</span></b><br />
 <span style="font-size: 12px"><span style="font-size: 15px">for all commands: lootchest.&lt;command&gt;</span></span><br />
 <span style="font-size: 12px"><span style="font-size: 15px">for admins: lootchest.admin/lootchest.*</span></span><br />
 <br />
@@ -91,6 +85,6 @@ You can watch this commit for example (only the 4 first files): https://github.c
 <span style="font-size: 22px"><b>Using my code:</b></span><br />
 <span style="font-size: 15px">Don&#039;t sell copy of this thing, it will always stay open source. You can still use my code if you want to edit this plugin for yourself, or someone in needs, or you can use some function for your own plugin^^ (the fall effect class could be useful to some, and there&#039;s many menu in this, and also some config file functions) </span>&#8203;
 </div>
-</div></span>
+
 
 
