@@ -74,6 +74,7 @@ public final class FallingPackageEntity {
                         .newInstance(startLoc, this.material, this.height, this.speed, Main.getInstance());
             } catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | ClassNotFoundException ex) {
                 Utils.logInfo("&cError while creating the armorstand fall packet: " + ex.getMessage());
+                //ex.printStackTrace();
             }
             armorstandFall.sendPacketToAll();
 		}

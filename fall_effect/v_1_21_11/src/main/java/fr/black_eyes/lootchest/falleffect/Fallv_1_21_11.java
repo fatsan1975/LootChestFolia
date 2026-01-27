@@ -178,7 +178,7 @@ public final class Fallv_1_21_11 implements IFallPacket {
          for(Item item : Arrays.stream(Items.class.getFields()).map(field -> {
              try {
                  return (Item) field.get(null);
-             } catch (IllegalArgumentException | IllegalAccessException ignored) {
+             } catch (IllegalArgumentException | IllegalAccessException | ClassCastException ignored) {
              }
              return null;
          }).toArray(Item[]::new)) {
