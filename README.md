@@ -8,7 +8,7 @@ mvn clean install
 ### How do I update the plugin at each minecraft version?
 
 - I first update this fork with main official branch of decenholograms: https://github.com/Guarmanda/DecentHolograms
-- then, in fall_effect folder, I create a copy of the latest version of FallEffect class from DecentHolograms, and I adapt it to the new version (most of the time, nothing changes, or only one thing)
+- then, in fall_effect folder, I create a copy of the latest version of FallEffect class, and I adapt it to the new version (most of the time, nothing changes, or only one thing)
 You can watch this commit for example (only the 4 first files): https://github.com/Guarmanda/LootChest/commit/b421f9f61d75d8f4f2fd21ccecca0a21a83e474c
 
 
