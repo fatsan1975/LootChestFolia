@@ -17,7 +17,7 @@
         <release>8</release>
         <source>8</source>
         <target>8</target>
-        <revision>2.5.8</revision>
+        <revision>2.5.9</revision>
         <paperVersion>1.21.7</paperVersion>
     </properties>
     <repositories>

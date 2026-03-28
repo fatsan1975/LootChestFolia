@@ -187,6 +187,9 @@ public enum Particle {
 	public static int getVersion() {
 		if(version == 0) {
 			String completeVer = Bukkit.getBukkitVersion().split("-")[0];
+            // there is now an exception: version can now be just "26.1". Let's add a "1." before it if there's no "1"
+            if(!completeVer.startsWith("1"))
+                completeVer = "1." + completeVer;
 			// version can be 1.8.4 or 1.12.2 or 1.8, we need to get all the digits after the first dot, and ignore the second dot IF THERE IS ONE
 			version = Integer.parseInt(completeVer.split("\\.")[1]);
 		}
