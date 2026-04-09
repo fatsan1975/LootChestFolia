@@ -18,7 +18,7 @@
         <source>8</source>
         <target>8</target>
         <revision>2.5.9</revision>
-        <paperVersion>1.21.7</paperVersion>
+        <paperVersion>1.21.11</paperVersion>
     </properties>
     <repositories>
         <repository>
@@ -34,6 +34,20 @@
             <url>https://repo.papermc.io/repository/maven-public/</url>
         </repository>
     </repositories>
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>net.java.dev.jna</groupId>
+                <artifactId>jna</artifactId>
+                <version>5.17.0</version>
+            </dependency>
+            <dependency>
+                <groupId>net.java.dev.jna</groupId>
+                <artifactId>jna-platform</artifactId>
+                <version>5.17.0</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
     <build>
         <plugins>
             <plugin>

@@ -13,7 +13,6 @@ import org.bukkit.block.BlockState;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import fr.black_eyes.api.events.LootChestSpawnEvent;
 import fr.black_eyes.lootchest.falleffect.FallingPackageEntity;
@@ -156,7 +155,7 @@ public class Lootchest {
 
 	@Getter @Setter private long protectionTime;
 
-	@Getter @Setter private BukkitRunnable respawnTask;
+	@Getter @Setter private SchedulerCompat.TaskHandle respawnTask;
 	
 	@Getter @Setter private Integer maxFilledSlots;
 	
@@ -449,10 +448,25 @@ public class Lootchest {
 
 		// check if lootin is installed
 		if(Config.getInstance().lootin && Bukkit.getPluginManager().isPluginEnabled("Lootin")) {
-			if(block.getType().equals(Material.CHEST) || block.getType().equals(Material.TRAPPED_CHEST))
-				com.github.sachin.lootin.utils.ChestUtils.setLootinContainer(null,block.getState(),com.github.sachin.lootin.utils.ContainerType.CHEST);
-			else if(block.getType().equals(Material.valueOf("BARREL")))
-				com.github.sachin.lootin.utils.ChestUtils.setLootinContainer(null,block.getState(),com.github.sachin.lootin.utils.ContainerType.BARREL);
+			try {
+				Class<?> containerTypeClass = Class.forName("com.github.sachin.lootin.utils.ContainerType");
+				Object containerType;
+				if(block.getType().equals(Material.CHEST) || block.getType().equals(Material.TRAPPED_CHEST)) {
+					containerType = Enum.valueOf((Class<Enum>) containerTypeClass, "CHEST");
+				}
+				else if(block.getType().equals(Material.valueOf("BARREL"))) {
+					containerType = Enum.valueOf((Class<Enum>) containerTypeClass, "BARREL");
+				} else {
+					containerType = null;
+				}
+				if (containerType != null) {
+					Class<?> chestUtilsClass = Class.forName("com.github.sachin.lootin.utils.ChestUtils");
+					chestUtilsClass.getMethod("setLootinContainer", String.class, BlockState.class, containerTypeClass)
+							.invoke(null, null, block.getState(), containerType);
+				}
+			} catch (Exception ignored) {
+				// Lootin API not available / changed; skip integration safely
+			}
 		}
 
 		// spawn particles and hologram if needed

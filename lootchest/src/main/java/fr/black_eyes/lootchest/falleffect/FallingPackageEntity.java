@@ -12,6 +12,7 @@ import org.bukkit.entity.Firework;
 import org.bukkit.util.Vector;
 
 import fr.black_eyes.lootchest.Main;
+import fr.black_eyes.lootchest.SchedulerCompat;
 
 import org.bukkit.Material;
 import org.bukkit.Location;
@@ -143,11 +144,11 @@ public final class FallingPackageEntity {
             fwm.addEffect(FireworkEffect.builder().with(type).withColor(Color.RED).withColor(Color.WHITE).build());
             fwm.setPower(1);
             fw.setFireworkMeta(fwm);
-            Main.getInstance().getServer().getScheduler().runTaskLater(Main.getInstance(), fw::detonate, 1L);
+            SchedulerCompat.runRegionLater(Main.getInstance(), goodLocation(), 1L, fw::detonate);
     }
 
     private void retick() {
-    	Main.getInstance().getServer().getScheduler().runTaskLater(Main.getInstance(), this::tick, 1L);
+        SchedulerCompat.runRegionLater(Main.getInstance(), target, 1L, this::tick);
     }
     
 
