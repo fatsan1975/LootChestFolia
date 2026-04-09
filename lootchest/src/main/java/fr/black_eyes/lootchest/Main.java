@@ -10,7 +10,6 @@ import fr.black_eyes.lootchest.commands.SubCommand;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.plugin.PluginManager;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import fr.black_eyes.lootchest.commands.CommandHandler;
 import fr.black_eyes.lootchest.listeners.DeleteListener;
@@ -56,7 +55,13 @@ public class Main extends SimpleJavaPlugin {
      * @return true if bungee is enabed, else false
      */
     private boolean hasBungee(){
-        boolean bungee = org.spigotmc.SpigotConfig.bungee;
+        boolean bungee = false;
+		try {
+			Class<?> spigotConfig = Class.forName("org.spigotmc.SpigotConfig");
+			bungee = spigotConfig.getField("bungee").getBoolean(null);
+		} catch (Exception ignored) {
+			// SpigotConfig class not present on this runtime
+		}
         boolean onlineMode = Bukkit.getServer().getOnlineMode();
         return (bungee && !onlineMode);
     }
@@ -218,49 +223,29 @@ public class Main extends SimpleJavaPlugin {
 	 * Servers with bad performances (or with 400 chests) should disable particles.
 	 */
 	private void startParticles() {
-		new Thread(() -> {
-			if(Main.getCompleteVersion()>=1080){
-				new BukkitRunnable() {
-					public void run() {
-						try{
-							float radius = (float) configs.PART_radius;
-							float speed = (float)configs.PART_speed;
-							int number = configs.partNumber;
-							if (configs.partEnable) {
-								for(Map.Entry<Location, Particle> entry: part.entrySet()) {
-									boolean loaded = entry.getKey().getWorld().isChunkLoaded((int)entry.getKey().getX()/16, (int)entry.getKey().getZ()/16) ;
-									if (loaded && entry.getValue()!=null)
-											try{
-												entry.getValue().display(radius, radius, radius, speed, number, entry.getKey(), entry.getKey().getWorld().getPlayers());
-											}catch(Exception e) {
-												// concurrent modification exception, just ignore it
-											}
-
-								}
-							}
-						}catch(Exception e) {
-							// concurrent modification exception, just ignore it
-						}
+		SchedulerCompat.runGlobalRepeating(this, 0, configs.partRespawnTicks, () -> {
+			try {
+				float radius = (float) configs.PART_radius;
+				float speed = (float) configs.PART_speed;
+				int number = configs.partNumber;
+				if (!configs.partEnable) {
+					return;
+				}
+				for (Map.Entry<Location, Particle> entry : new HashMap<>(part).entrySet()) {
+					if (entry.getValue() == null) {
+						continue;
 					}
-				}.runTaskTimer(this, 0, configs.partRespawnTicks);
-			}else{
-				new BukkitRunnable() {
-					public void run() {
-						float radius = (float) configs.PART_radius;
-						float speed = (float)configs.PART_speed;
-						int number = configs.partNumber;
-						if (configs.partEnable) {
-							for(Map.Entry<Location, Particle> entry: part.entrySet()) {
-								boolean loaded = entry.getKey().getWorld().isChunkLoaded((int)entry.getKey().getX()/16, (int)entry.getKey().getZ()/16) ;
-								if (loaded && entry.getValue()!=null)
-									entry.getValue().display(radius, radius, radius, speed, number, entry.getKey(), entry.getKey().getWorld().getPlayers());
-								
-							}
+					SchedulerCompat.runRegionNow(this, entry.getKey(), () -> {
+						boolean loaded = entry.getKey().getWorld().isChunkLoaded((int) entry.getKey().getX() / 16, (int) entry.getKey().getZ() / 16);
+						if (loaded) {
+							entry.getValue().display(radius, radius, radius, speed, number, entry.getKey(), entry.getKey().getWorld().getPlayers());
 						}
-					}
-				}.runTaskTimer(this, 0, configs.partRespawnTicks);
+					});
+				}
+			} catch (Exception ignored) {
+				// Concurrent map updates or temporary state issues: skip this tick
 			}
-		}).start();
+		});
 	}
     		
 	/**
@@ -272,7 +257,7 @@ public class Main extends SimpleJavaPlugin {
     	if(countdown>0) 
 			Utils.logInfo("Chests will load in "+ countdown + " seconds.");
     	
-        this.getServer().getScheduler().runTaskLater(this, () -> {
+        SchedulerCompat.runGlobalLater(this, countdown + 20, () -> {
             Utils.logInfo("Loading chests...");
             long current = (new Timestamp(System.currentTimeMillis())).getTime();
             for(String keys : Objects.requireNonNull(configFiles.getData().getConfigurationSection("chests")).getKeys(false)) {
@@ -290,19 +275,17 @@ public class Main extends SimpleJavaPlugin {
             }
             
             Utils.logInfo("Loaded "+lootChest.size() + " Lootchests in "+((new Timestamp(System.currentTimeMillis())).getTime()-current) + " miliseconds");
-            Utils.logInfo("Starting LootChest timers asynchronously...");
+            Utils.logInfo("Starting LootChest timers...");
             for (final Lootchest lc : lootChest.values()) {
-                Bukkit.getScheduler().scheduleAsyncDelayedTask(instance, () ->
-                        Bukkit.getScheduler().scheduleSyncDelayedTask(instance, () -> {
-                            if (!lc.spawn(false)) {
-                                LootChestUtils.scheduleReSpawn(lc);
-                                lc.reactivateEffects();
-                            }
-                        }, 0L)
-                        , 5L);
+				SchedulerCompat.runRegionLater(instance, lc.getActualLocation(), 5L, () -> {
+					if (!lc.spawn(false)) {
+						LootChestUtils.scheduleReSpawn(lc);
+						lc.reactivateEffects();
+					}
+				});
             }
             Utils.logInfo("Plugin loaded");
-                }, countdown+20);
+                });
 	}
 	
 	

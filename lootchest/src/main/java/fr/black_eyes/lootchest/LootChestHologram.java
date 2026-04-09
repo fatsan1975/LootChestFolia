@@ -13,7 +13,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import fr.black_eyes.simpleJavaPlugin.Utils;
 import lombok.Getter;
@@ -57,7 +56,7 @@ public class LootChestHologram {
 	 */
 	@Getter private Location location;
 	private final Lootchest chest;
-	private BukkitRunnable runnable;
+	private SchedulerCompat.TaskHandle runnable;
 	/**
 	 * @param chest the chest linked with this holo
 	 */
@@ -83,13 +82,8 @@ public class LootChestHologram {
 					startShowTime();
 				}
 				if(Main.getCompleteVersion()>=1094 && runnable.isCancelled()) {
-					try {
-						runnable.runTaskTimer(Main.getInstance(), 0, 20);
-					}catch(IllegalStateException e) {
-						runnable.cancel();
-						runnable = null; 
-						startShowTime();
-					}
+					runnable = null;
+					startShowTime();
 				}
 			}
 		}
@@ -168,8 +162,7 @@ public class LootChestHologram {
 	 * Shows a timer on the hologram if the config says it
 	 */
 	private void startShowTime() {
-		runnable = new BukkitRunnable() {
-    		public void run() {
+		runnable = SchedulerCompat.runRegionRepeating(Main.getInstance(), location, 0, 20, () -> {
     			Hologram holo = getHologram();
     			long tempsActuel = (new Timestamp(System.currentTimeMillis())).getTime()/1000;
     			long secondes = chest.getTime()*60;
@@ -197,9 +190,7 @@ public class LootChestHologram {
     			if(secondes<=0) {
     				runnable.cancel();
     			}
-	    	}
-	    };
-	    runnable.runTaskTimer(Main.getInstance(), 0, 20);
+	    	});
 	}
 	
 }

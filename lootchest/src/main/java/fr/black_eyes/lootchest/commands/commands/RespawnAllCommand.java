@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 import fr.black_eyes.lootchest.BungeeChannel;
 import fr.black_eyes.lootchest.Lootchest;
 import fr.black_eyes.lootchest.Main;
+import fr.black_eyes.lootchest.SchedulerCompat;
 import fr.black_eyes.lootchest.commands.ArgType;
 import fr.black_eyes.lootchest.commands.SubCommand;
 import fr.black_eyes.simpleJavaPlugin.Utils;
@@ -35,9 +36,7 @@ public class RespawnAllCommand extends SubCommand {
 			if (worldName != null && !l.getWorld().equals(worldName)) {
 				continue;
 			}
-			Bukkit.getScheduler().scheduleAsyncDelayedTask(Main.getInstance(), () ->
-					Bukkit.getScheduler().scheduleSyncDelayedTask(Main.getInstance(), () ->
-							l.spawn(true), 0L), 5L);
+			SchedulerCompat.runRegionLater(Main.getInstance(), l.getActualLocation(), 5L, () -> l.spawn(true));
 		}
 		String message;
 		if (Main.configs.noteAllcmdWorldE && worldName != null) {
