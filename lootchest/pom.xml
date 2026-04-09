@@ -130,12 +130,6 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>net.kyori</groupId>
-            <artifactId>adventure-api</artifactId>
-            <version>4.17.0</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
             <groupId>io.papermc.paper</groupId>
             <artifactId>paper-api</artifactId>
             <version>${paperVersion}-R0.1-SNAPSHOT</version>
@@ -174,48 +168,6 @@
             <scope>provided</scope>
         </dependency>
   
-        <dependency>
-            <groupId>com.github.TechFortress</groupId>
-            <artifactId>GriefPrevention</artifactId>
-            <version>16.11.6</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.massivecraft</groupId>
-            <artifactId>factions</artifactId>
-            <version>2.14.0</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.local.sachin.lootin</groupId>
-            <artifactId>lootin</artifactId>
-            <version>11.3</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.massivecraft</groupId>
-            <artifactId>massivecore</artifactId>
-            <version>2.14.0</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>net.prosavage</groupId>
-            <artifactId>factionsx</artifactId>
-            <version>1.2</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.bekvon.bukkit</groupId>
-            <artifactId>residence</artifactId>
-            <version>5.1.6.2</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.spigotmc</groupId>
-            <artifactId>spigotConfigClass</artifactId>
-            <version>1.0</version>
-            <scope>provided</scope>
-        </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
@@ -289,7 +241,6 @@
         <dependency><groupId>fr.black_eyes.lootchest</groupId><artifactId>v_1_21_9</artifactId><version>${revision}</version></dependency>
         <dependency><groupId>fr.black_eyes.lootchest</groupId><artifactId>v_1_21_10</artifactId><version>${revision}</version></dependency>
         <dependency><groupId>fr.black_eyes.lootchest</groupId><artifactId>v_1_21_11</artifactId><version>${revision}</version></dependency>
-        <dependency><groupId>fr.black_eyes.lootchest</groupId><artifactId>v_26_1</artifactId><version>${revision}</version></dependency>
 
         <dependency>
             <groupId>fr.black_eyes.lootchest</groupId>

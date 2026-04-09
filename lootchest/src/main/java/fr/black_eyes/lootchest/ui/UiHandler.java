@@ -1,6 +1,7 @@
 package fr.black_eyes.lootchest.ui;
 
 import fr.black_eyes.lootchest.Lootchest;
+import fr.black_eyes.lootchest.SchedulerCompat;
 import fr.black_eyes.lootchest.ui.menu.ChancesMenu;
 import fr.black_eyes.lootchest.ui.menu.ContentsMenu;
 import fr.black_eyes.lootchest.ui.menu.CopyMenu;
@@ -11,7 +12,6 @@ import fr.black_eyes.lootchest.ui.menu.TypeMenu;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -67,12 +67,7 @@ public class UiHandler {
 	 * @param delay ticks to wait before opening the UI
 	 */
 	public void openUi(Player player, UiType type, Lootchest chest, long delay) {
-		new BukkitRunnable() {
-			@Override
-			public void run() {
-				openUi(player, type, chest);
-			}
-		}.runTaskLater(plugin, delay);
+		SchedulerCompat.runRegionLater(plugin, player.getLocation(), delay, () -> openUi(player, type, chest));
 	}
 
 	/**

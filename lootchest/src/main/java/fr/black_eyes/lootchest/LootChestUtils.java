@@ -16,7 +16,6 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.LivingEntity;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import fr.black_eyes.simpleJavaPlugin.Files;
 import fr.black_eyes.simpleJavaPlugin.Utils;
@@ -148,13 +147,12 @@ public class LootChestUtils  {
 		//we have to noe duplicate respawn tasks
 		if(lc.getRespawnTask()!=null)
 			lc.getRespawnTask().cancel();
-		lc.setRespawnTask( new BukkitRunnable() { 	
-            @Override
-            public void run() {
-            	lc.spawn(false);
-            }                
-        });
-		lc.getRespawnTask().runTaskLater(Main.getInstance(), timeToWait*20);
+		lc.setRespawnTask(SchedulerCompat.runRegionLater(
+				Main.getInstance(),
+				lc.getActualLocation(),
+				timeToWait * 20,
+				() -> lc.spawn(false)
+		));
     }
 	
 	/**
