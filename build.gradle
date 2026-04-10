@@ -1,0 +1,58 @@
+plugins {
+    id 'base'
+}
+
+def isWindows = System.getProperty('os.name').toLowerCase().contains('windows')
+
+def mvnCmd = isWindows ? ['cmd', '/c', 'mvn'] : ['bash', '-lc', 'mvn']
+
+def runMaven = { String args ->
+    if (isWindows) {
+        return ['cmd', '/c', "mvn ${args}"]
+    }
+    return ['bash', '-lc', "mvn ${args}"]
+}
+
+def pom = new XmlSlurper(false, false).parse(file('pom.xml'))
+ext.pluginRevision = pom.properties.revision.text()
+
+tasks.register('mavenClean', Exec) {
+    workingDir project.rootDir
+    commandLine runMaven('clean -DskipTests')
+}
+
+tasks.register('purgeProblematicM2') {
+    doLast {
+        def m2 = new File(System.getProperty('user.home'), '.m2/repository')
+        [
+                'net/java/dev/jna/jna-platform/5.10.0',
+                'com/google/protobuf/protobuf-java/3.19.4'
+        ].each { rel ->
+            def dir = new File(m2, rel)
+            if (dir.exists()) {
+                dir.deleteDir()
+            }
+        }
+    }
+}
+
+tasks.register('mavenPackage', Exec) {
+    dependsOn 'purgeProblematicM2'
+    workingDir project.rootDir
+    commandLine runMaven('-U -pl lootchest -am -DskipTests package')
+}
+
+tasks.register('collectJar', Copy) {
+    dependsOn 'mavenPackage'
+    from layout.projectDirectory.file('lootchest/target/lootchest.jar')
+    into layout.buildDirectory.dir('libs')
+    rename { "Lootchest-${pluginRevision}.jar" }
+}
+
+tasks.named('clean') {
+    dependsOn 'mavenClean'
+}
+
+tasks.named('build') {
+    dependsOn 'collectJar'
+}
